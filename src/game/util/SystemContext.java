@@ -10,7 +10,7 @@ public class SystemContext {
 	
 	final static Logger log = LoggerFactory.getLogger(SystemContext.class);
 	
-	private static ApplicationContext CTX = null;
+	private final static ApplicationContext CTX = new ClassPathXmlApplicationContext("config/spring/applicationContext.xml");
 
 	private SystemContext(){}
 	
@@ -18,11 +18,7 @@ public class SystemContext {
 	 * 初始化spring上下文环境
 	 */
 	public static void init(){
-		log.info("***开始初始化spring上下文...***");
-		if(CTX == null)
-			CTX = new ClassPathXmlApplicationContext("config/spring/applicationContext.xml");
-		else
-			log.info("本来已经初始化，请勿重复调用初始化方法!");
+		//调用此空方法在程序启动时初始化spring上下文，避免第一次调用时再初始化
 	}
 	
 	public static ApplicationContext getContext(){

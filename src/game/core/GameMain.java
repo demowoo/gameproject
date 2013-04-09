@@ -1,10 +1,11 @@
 package game.core;
 
-import java.io.File;
-import java.util.Map;
-
+import game.util.GamePathUtil;
 import game.util.PropertiesUtil;
 import game.util.SystemContext;
+
+import java.io.File;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +14,11 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.util.StatusPrinter;
-
 public class GameMain{
-	final Logger log = LoggerFactory.getLogger(GameMain.class);
+	private final Logger log = LoggerFactory.getLogger(GameMain.class);
 	
-	//程序的classpath路径
-	private String rootPath = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-	//游戏配置路径
-	String gameConfigPath = new File(rootPath).getParent() + File.separator + "gameconfig.properties";
-	//日志配置文件路 
-	private String logbackPath = rootPath + "config/logback.xml";
+	private final File logbackFile = GamePathUtil.getInstance().getConfigChildsPath("logback.xml");
+	private final File globalConfigFile = GamePathUtil.getInstance().getGlobalConfig(); 
 	
 	public static void start(){
 		GameMain game = new GameMain();
@@ -33,7 +29,7 @@ public class GameMain{
 	 *权限设成private，使之不可实例化
 	 */
 	private GameMain(){
-		log.info("String game......");
+		log.info("开始启动游戏,Staring......");
 	}
 	
 	/**
@@ -41,12 +37,16 @@ public class GameMain{
 	 */
 	private void initGame(){
 		//设置日志文件配置路径,影响到所有的日志设置,所以要放在最前面初始化
-		setLogbackConfigPath(logbackPath);
+		if(logbackFile.exists())
+			setLogbackConfigPath(logbackFile);
+		else
+			 System.out.println("加载logback配置文件失败!!!\n文件不存在:"+logbackFile);
 		
 		PropertiesUtil prop = new PropertiesUtil();
-		Map<String, String> propmap = prop.getMapFromProp(gameConfigPath);
+		Map<String, String> propmap = prop.getMapFromProp(globalConfigFile);
 		
 		//初始化spring上下文环境
+		log.info("***开始初始化spring上下文...***");
 		SystemContext.init();
 	}
 	
@@ -54,7 +54,7 @@ public class GameMain{
 	 * 设置logback日志的配置文件路径
 	 * @param path
 	 */
-	private void setLogbackConfigPath(String path){
+	private void setLogbackConfigPath(File path){
 		LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory();
         JoranConfigurator configurator = new JoranConfigurator();
         configurator.setContext(lc);

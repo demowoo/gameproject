@@ -1,5 +1,6 @@
 package game.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,21 +12,21 @@ import org.slf4j.LoggerFactory;
 
 public class PropertiesUtil {
 	
-	final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);  
+	private final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);  
 	
-	public Map<String, String> getMapFromProp(String propPath){
+	public Map<String, String> getMapFromProp(File propFile){
 		
 		Map<String, String> propMap = new HashMap<String, String>();
 		
 		try {
 			Properties prop = new Properties();//属性集合对象 
-			FileInputStream fis = new FileInputStream(propPath);//属性文件输入流 
+			FileInputStream fis = new FileInputStream(propFile);//属性文件输入流 
 			prop.load(fis);//将属性文件流装载到Properties对象中
-			logger.info("载入properties文件：{}", propPath);
+			logger.info("载入properties文件：{}", propFile);
 			Set<String> propNames = prop.stringPropertyNames();
 			for (String name : propNames) {
 				propMap.put(name, prop.getProperty(name));
-				logger.info("读取键值对: {}, {}", name, prop.getProperty(name));
+				logger.debug("读取键值对: {}, {}", name, prop.getProperty(name));
 			}
 			fis.close();//关闭流 
 			

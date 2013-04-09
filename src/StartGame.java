@@ -1,4 +1,5 @@
 import game.core.GameMain;
+import game.protocol.PlayerProtocol;
 
 public class StartGame {
 
@@ -6,7 +7,13 @@ public class StartGame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GameMain.start();
+//		`			
+		test();
+	}
+	
+	public static void test(){
+		if(PlayerProtocol.LOGOUT.getValue() == 1)
+			System.out.println(2);
 	}
 
 }

@@ -15,7 +15,7 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
 import ch.qos.logback.core.util.StatusPrinter;
 public class GameMain{
-	private final Logger log = LoggerFactory.getLogger(GameMain.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	
 	private final File logbackFile = GamePathUtil.getInstance().getConfigChildsPath("logback.xml");
 	private final File globalConfigFile = GamePathUtil.getInstance().getGlobalConfig(); 
@@ -63,7 +63,7 @@ public class GameMain{
             configurator.doConfigure(path);
             log.info("成功加载logback配置文件: {}", path);
         } catch (JoranException e) {
-            log.error("加载logback配置文件失败: {}" , path);
+            log.error("加载logback配置文件失败: {}", path);
             log.error(e.getMessage(), e);
         }
         StatusPrinter.printInCaseOfErrorsOrWarnings(lc);

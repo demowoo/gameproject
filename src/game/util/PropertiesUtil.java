@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 public class PropertiesUtil {
 	
-	private final Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);  
+	private final Logger logger = LoggerFactory.getLogger(getClass());  
 	
 	public Map<String, String> getMapFromProp(File propFile){
 		

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component("jsonUtil")
 public class JsonUtilImpl implements JsonUtil{
 	
-	final static Logger logger = LoggerFactory.getLogger(JsonUtilImpl.class);
+	final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private final ObjectMapper mapper = new ObjectMapper();
 	
